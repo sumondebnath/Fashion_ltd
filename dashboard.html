@@ -1,22 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="./images/fashionNoback.webp">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="./images/fashionNoback.webp" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
     <title>Dashboard</title>
-    <link rel="stylesheet" href="output/style.css">
-</head>
-<body>
-    
-    <h1>this is the dashboard.</h1>
+    <link rel="stylesheet" href="output/style.css" />
+  </head>
+  <body class="bg-slate-200/40">
 
-    <button onclick="handleLogout()" class="m-10" type="submit">logout</button>
+    <!-- <button onclick="handleLogout()"  type="submit">logout</button> -->
+
+    <div class="fixed w-full flex justify-between px-10 items-center lg:hidden h-10 bg-slate-400/70 ">
+        <div>
+            <button id="dash-togle" class="hover:bg-slate-600 px-2 py-1 border border-blue-500 rounded-lg" type="menu">
+                <i class="fa-solid fa-bars hover:text-white"></i>
+            </button>
+        </div>
+        <div>
+            <h1>Dashboard</h1>
+        </div>
+    </div>
+
+
+
+    <div class="flex gap-5">
+        <div id="dash-menu" class=" w-64 h-screen shadow-xl bg-white fixed hidden lg:block">
+
+            <!-- responsive navigation bar icons -->
+            <div class="flex justify-end mx-4 my-3">
+                <button id="dash-back" class="lg:hidden p-4 hover:bg-slate-600 px-2 py-1 border border-blue-500 rounded-lg " type="menu"><i class="fa-solid fa-arrow-left"></i></button>
+            </div>
+
+                    <!-- dashboard Navigation bar -->
+            <div>
+                <ul class="py-8 mx-auto">
+                    <li id="dash-left-img"></li>
+                    <li id="dash-user-type" class="text-center font-bold mt-2 text-lg"></li>
+                </ul>
+
+                <ul class="">
+                    <li class="w-full hover:bg-slate-300 hover:text-sky-500 font-semibold md:text-xl text-start px-10 py-2 my-2"><a  href="index.html">Home</a></li>
+                    <li class="w-full hover:bg-slate-300 hover:text-sky-500 font-semibold md:text-xl text-start px-10 py-2 my-2"><a href="">Edit Profile</a></li>
+                    <li class="w-full hover:bg-slate-300 hover:text-sky-500 font-semibold md:text-xl text-start px-10 py-2 my-2"><a href="">Add Product</a></li>
+                    <li class="w-full hover:bg-slate-300 hover:text-sky-500 font-semibold md:text-xl text-start px-10 py-2 my-2"><a href="shop.html">Shop Now</a></li>
+                </ul>
+                <button onclick="handleLogout()"  type="submit" class="w-full hover:bg-slate-300 hover:text-sky-500 font-semibold md:text-xl text-start px-10 py-2 ">Sign Out</button>
+            </div>
+            <div id="admin-panel" class="flex flex-col justify-end xl:h-96 lg:h-80 h-64  p-4">
+                <a class="bg-blue-500 text-white text-center font-semibold hover:bg-slate-500 px-4 py-2 rounded" href="https://fashion-api-g1d6.onrender.com/admin/" target="_blank">Admin Panel</a>
+            </div>
+        </div>
+
+                <!-- Dashboard main contentainer -->
+        <div class="flex-1 lg:ml-72 bg-white overflow-auto">
+
+            <!-- user details container -->
+            <div class="sm:flex sm:justify-around sm:items-center md:py-10 py-14 shadow-2xl rounded-xl">
+                <div id="dash-user-image">
+
+                </div>
+                <div id="dash-profile-details" class=" sm:px-0 px-10 py-5">
+                    
+                </div>
+            </div>
+
+            <!-- updated container -->
+            <div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+
+  
+
 
     <!-- script files -->
     <script src="./script/dashboard.js"></script>
     <!-- sweet alart cdn -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-</body>
+  </body>
 </html>
