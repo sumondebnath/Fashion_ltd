@@ -2,7 +2,7 @@
 window.onload = () => {
   const token = localStorage.getItem("token");
   const user_id = localStorage.getItem("user_id");
-  // console.log(token, user_id);
+  console.log(token, user_id);
 
   if (!token && !user_id) {
     window.location.href = "login.html";
@@ -61,8 +61,8 @@ window.onload = () => {
       dash_user_image.innerHTML = `
       <img class="w-40 mx-auto rounded-2xl border-2 border-blue-500" src="${data[0].image}" alt="user-image">
     `;
-    })
-    .catch((err) => console.error(err));
+    });
+    // .catch((err) => console.error(err));
 
   // user address API fetch
   fetch(
@@ -73,10 +73,92 @@ window.onload = () => {
       // console.log(data);
       address_id = data[0].id;
       handleAddressInstance(data);
-    })
-    .catch((err) => console.error(err));
+    });
+    // .catch((err) => console.error(err));
+
+
+
+    handleCategory();
+
 };
 
+
+const handleCategory=()=>{
+  const select_category = document.getElementById("category");
+  // const div = document.createElement("div");
+  fetch("https://fashion-api-g1d6.onrender.com/category/list/").then((res)=>res.json()).then((data)=>{
+    console.log(data);
+    data.forEach((shop)=>{
+      const option = document.createElement("option");
+      option.value = shop.id;
+      option.innerText = shop.name;
+      select_category.appendChild(option);
+    });
+  });  //.catch((err)=>console.error(err));
+};
+
+
+const getSize=()=>{
+  // const checkbox = document.querySelectorAll('input[name="sizes"]:checked');
+  const checkbox = document.getElementsByName("sizes");
+  let selected_size = [];
+  const selected_Checkbox = Array.from(checkbox).forEach((box)=>{
+    // console.log(box.value);
+    selected_size.push(box.value);
+  });
+  // console.log(selected_size);
+  return selected_size;
+};
+
+
+const addProduct=(event)=>{
+  event.preventDefault();
+  // console.log(event);
+  const name = document.getElementById("product_name").value;
+  const product_type = document.getElementById("product_type").value;
+  const product_number = document.getElementById("product_number").value;
+  const brand_number = document.getElementById("brand_number").value;
+  const image = document.getElementById("product_image").files[0];
+  const gender_type = document.getElementById("gender_type").value;
+  // const gender_type = gender_type.options[gender_type.selectedIndex].value;
+  const price = document.getElementById("price").value;
+  const description = document.getElementById("description").value;
+  const category = document.getElementById("category").value;
+  const sizes = getSize();
+
+  const user_id = localStorage.getItem("user_id");
+
+  const product = {
+    name, product_type, product_number, brand_number, sizes, image, gender_type, price, description, category
+  }
+  console.log(product);
+
+  const productData = new FormData();
+  sizes.forEach((size)=>{
+    productData.append("size", size)
+  });
+  // productData.append("size", size.forEach((s)=>s));
+  productData.append("name", name);
+  productData.append("image", image);
+  productData.append("product_number", product_number);
+  productData.append("brand_number", brand_number);
+  productData.append("price", price);
+  productData.append("product_type", product_type);
+  productData.append("gender_type", gender_type);
+  productData.append("description", description);
+  productData.append("user", user_id);
+  productData.append("category", category);
+
+  
+
+  fetch("https://fashion-api-g1d6.onrender.com/product/list/", {
+    method:"POST",
+    body:productData,
+  }).then((res)=>res.json()).then((data)=>{
+    console.log(data);
+  }).catch((err)=>console.error(err));
+
+};
 
 
 
@@ -93,7 +175,7 @@ const handleAccountInstance = (user_data) => {
 
 
 const handleDetailsInstance = (details_data) => {
-  console.log(details_data[0].id);
+  // console.log(details_data[0].gender);
   // document.getElementById("image").files[0] = address_data[0].image;
   document.getElementById("gender").value = details_data[0].gender;
   document.getElementById("account_type").value = details_data[0].account_type;
@@ -105,9 +187,8 @@ const handleDetailsInstance = (details_data) => {
 
 
 const handleAddressInstance = (address_data) => {
-  console.log(address_data[0].id);
-  document.getElementById("street_address").value =
-    address_data[0].street_address;
+  // console.log(address_data[0].id);
+  document.getElementById("street_address").value =address_data[0].street_address;
   document.getElementById("city").value = address_data[0].city;
   document.getElementById("postal_code").value = address_data[0].postal_code;
   document.getElementById("country").value = address_data[0].country;
@@ -179,13 +260,10 @@ const handleUserDetails = (event) => {
     .then((res) => res.json())
     .then((data) => {
       // console.log(data[0].id);
-      fetch(
-        `https://fashion-api-g1d6.onrender.com/account/details/${data[0].id}/`,
-        {
+      fetch(`https://fashion-api-g1d6.onrender.com/account/details/${data[0].id}/`, {
           method: "PUT",
           body: DetailsForm,
-        }
-      )
+        })
         .then((res) => res.json())
         .then((data) => {
           console.log(data);
@@ -197,9 +275,9 @@ const handleUserDetails = (event) => {
   )
     .then((res) => res.json())
     .then((data) => {
-      console.log(data);
+      const address_id = data[0].id;
       fetch(
-        `https://fashion-api-g1d6.onrender.com/account/address/${data[0].id}/`,
+        `https://fashion-api-g1d6.onrender.com/account/address/${address_id}/`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

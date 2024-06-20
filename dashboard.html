@@ -60,6 +60,8 @@
             </div>
         </div>
 
+
+
                 <!-- Dashboard main contentainer -->
         <div class="flex-1 lg:ml-72  overflow-auto">
 
@@ -76,16 +78,19 @@
 
 
 
+            <!-- add fashions category container for admin -->
+
+
             <!-- add fashions product container for admin -->
             <div class="bg-white xl:px-32 lg:px-20 md:px-16 px-12 py-10 shadow-2xl rounded-lg my-10 w-full">
                 <h1 class="uppercase text-gray-600 text-center font-semibold text-2xl py-2">add product</h1>
                 <hr>
                 <form action="" enctype="multipart/form-data">
-                    <div class="lg:flex justify-between lg:items-center lg:flex-nowrap gap-16  flex-wrap w-full ">
+                    <div class="lg:flex justify-between lg:items-center lg:flex-nowrap xl:gap-16 gap-5  flex-wrap w-full ">
                         <div class="w-full">
                             <div>
-                                <label class="block uppercase font-semibold text-lg text-gray-700" for="name">product name</label>
-                                <input class="w-full h-10 border-2 border-sky-800 p-6 rounded-md" type="text" name="name" id="name">
+                                <label class="block uppercase font-semibold text-lg text-gray-700" for="product_name">product name</label>
+                                <input class="w-full h-10 border-2 border-sky-800 p-6 rounded-md" type="text" name="product_name" id="product_name">
                             </div>
                             <div>
                                 <label class="block uppercase font-semibold text-lg text-gray-700" for="product_type">product type</label>
@@ -97,41 +102,42 @@
                             </div>
                             <div>
                                 <label class="block uppercase font-semibold text-lg text-gray-700" for="brand_number">brand number</label>
-                                <input class="w-full h-10 border-2 border-sky-800 p-6 rounded-md" type="number" name="brand_number" id="brand_number">
+                                <input class="w-full h-10 border-2 border-sky-800 p-6 rounded-md" type="text" name="brand_number" id="brand_number">
                             </div>
+                            
                         </div>
 
                         <div class="w-full">
                             <div>
-                                <label class="block uppercase font-semibold text-lg text-gray-700" for="image">image</label>
-                                <input class="w-full h-12 border-2 border-sky-800 px-5 py-0.5 rounded-md" type="file" name="image" id="image">
+                                <label class="block uppercase font-semibold text-lg text-gray-700" for="product_image">image</label>
+                                <input class="w-full h-12 border-2 border-sky-800 px-5 py-0.5 rounded-md" type="file" name="product_image" id="product_image">
                             </div>
 
                             <div >
-                                <label class="block uppercase font-semibold text-lg text-gray-700" for="image">Size</label>
+                                <label class="block uppercase font-semibold text-lg text-gray-700" for="dropdownSearch">Size</label>
                                 <button id="dropdownSearchButton" data-dropdown-toggle="dropdownSearch" class="w-full h-12 border-2 border-sky-800 rounded-md "  type="button">Size</button>
                                 <!-- Dropdown menu -->
-                                <div id="dropdownSearch" class="">
+                                <div id="dropdownSearch" class="hidden">
                                     
-                                    <div class="bg-sky-200 px-32 md:px-52 rounded-md py-10" aria-labelledby="dropdownSearchButton">
-                                        <div class="flex">
-                                            <input class="" id="sm"  type="checkbox" value="sm" >
+                                    <div id="selected-size" class="bg-gray-300 px-32  md:px-32 rounded-md py-2 -m-4" aria-labelledby="dropdownSearchButton">
+                                        <div class="flex justify-start items-center gap-2 font-semibold hover:text-gray-600">
+                                            <input id="sm" name="sizes"  type="checkbox" value="sm" >
                                             <label for="sm" >SM</label>
                                         </div>
-                                        <div >
-                                            <input id="md" type="checkbox" value="md" >
+                                        <div class="flex justify-start items-center gap-2 font-semibold hover:text-gray-600">
+                                            <input id="md" name="sizes" type="checkbox" value="md" >
                                             <label for="md" >MD</label>
                                         </div>
-                                        <div>
-                                            <input id="lg" type="checkbox" value="lg">
+                                        <div class="flex justify-start items-center gap-2 font-semibold hover:text-gray-600">
+                                            <input id="lg" name="sizes" type="checkbox" value="lg">
                                             <label for="lg" >LG</label>
                                         </div>
-                                        <div >
-                                            <input id="xl" type="checkbox" value="xl" >
+                                        <div class="flex justify-start items-center gap-2 font-semibold hover:text-gray-600">
+                                            <input id="xl" name="sizes" type="checkbox" value="xl" >
                                             <label for="xl" >XL</label>
                                         </div>
-                                        <div >
-                                            <input id="2xl" type="checkbox" value="2xl" >
+                                        <div class="flex justify-start items-center gap-2 font-semibold hover:text-gray-600">
+                                            <input id="2xl" name="sizes" type="checkbox" value="2xl" >
                                             <label for="2xl" >2XL</label>
                                         </div>
                                     </div>
@@ -142,8 +148,8 @@
                             
 
                             <div>
-                                <label class="block uppercase font-semibold text-lg text-gray-700 " for="gender">Gender</label>
-                                <select class="w-full h-12 border-2 border-sky-800 rounded-md" id="gender" name="gender">
+                                <label class="block uppercase font-semibold text-lg text-gray-700 " for="gender_type">Gender Type</label>
+                                <select class="w-full h-12 border-2 border-sky-800 rounded-md" id="gender_type" name="gender_type">
                                   <option class="bg-white text-lg" selected disabled>Select gender type</option>
                                   <option class="bg-white text-lg" value="1">Men</option>
                                   <option class="bg-white text-lg" value="2">Women</option>
@@ -157,10 +163,27 @@
                         </div>
 
                     </div>
-                    <div>
-                        <label class="block uppercase font-semibold text-lg text-gray-700" for="description">Description</label>
-                        <textarea class="w-full border-2 border-sky-800 p-6 rounded-md " name="description" id="description" cols="30" rows="10"></textarea>
+                    <div class="lg:flex justify-between lg:flex-nowrap xl:gap-16 gap-5  flex-wrap w-full ">
+                        <div class="w-full"> 
+                            <label class="block uppercase font-semibold text-lg text-gray-700" for="description">Description</label>
+                            <textarea class="w-full border-2 border-sky-800 p-6 rounded-md " name="description" id="description" cols="30" rows="10"></textarea>
+                        </div>
+
+                        <div class="w-full">
+                            <div>
+                                <label class="block uppercase font-semibold text-lg text-gray-700 " for="category">Category</label>
+                                <select class="w-full h-12 border-2 border-sky-800 rounded-md" id="category" name="category">
+                                <option class="bg-white text-lg" selected disabled>Select Category</option> 
+                                <!-- <option class="bg-white text-lg" value="shop.id">shop.name</option>                        -->
+                                </select>
+                            </div>
+
+                            <div class="lg:mt-44 mt-4">
+                                <button class="px-16 py-4 bg-sky-700 border-2 text-white border-sky-700 hover:bg-white hover:text-sky-700 font-semibold rounded-md cursor-pointer w-full" type="submit" onclick="addProduct(event)">ADD</button>
+                            </div>
+                        </div>
                     </div>
+                    
                 </form>
             </div>
 
@@ -251,13 +274,13 @@
                 </form>
                 <div class="mt-10">
                     <hr>
-                    <h1 class="text-center py-2">Change Password<a class="ps-3 hover:text-blue-700 font-semibold hover:underline" href="">click here</a></h1>
+                    <h1 class="text-center py-2">Change Password<a class="ps-3 hover:text-blue-700 font-semibold hover:underline" href="#change-password">click here</a></h1>
                 </div>
             </div>
 
 
             <!-- change password container -->
-            <div class="bg-white xl:px-32 lg:px-20 md:px-16 px-12 py-10 shadow-2xl rounded-lg my-10 w-full">
+            <div id="change-password" class="bg-white xl:px-32 lg:px-20 md:px-16 px-12 py-10 shadow-2xl rounded-lg my-10 w-full">
                 <form action="" enctype="multipart/form-data">
                     <h1 class="uppercase text-gray-600 text-center font-semibold text-2xl">Change Password</h1>
                     <hr>
