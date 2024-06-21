@@ -1,4 +1,3 @@
-
 window.onload = () => {
   const token = localStorage.getItem("token");
   const user_id = localStorage.getItem("user_id");
@@ -6,6 +5,7 @@ window.onload = () => {
 
   if (!token && !user_id) {
     window.location.href = "login.html";
+    return;
   }
 
   if (token && user_id) {
@@ -42,6 +42,9 @@ window.onload = () => {
   const admin_panel = document.getElementById("admin-panel");
   const user_image = document.getElementById("dash-left-img");
   const dash_user_image = document.getElementById("dash-user-image");
+
+  const add_category = document.getElementById("add_category");
+  const add_product = document.getElementById("add_product")
   fetch(
     `https://fashion-api-g1d6.onrender.com/account/details/?user_id=${user_id}`
   )
@@ -50,6 +53,8 @@ window.onload = () => {
       handleDetailsInstance(data);
       if (data[0].account_type === "User") {
         admin_panel.style.display = "none";
+        add_category.style.display = "none";
+        add_product.style.display = "none";
       }
       user_image.innerHTML = `
       <img class="w-20 h-20 mx-auto rounded-full border-2 border-blue-500" src="${data[0].image}" alt="user-image">
@@ -70,9 +75,15 @@ window.onload = () => {
   )
     .then((res) => res.json())
     .then((data) => {
-      // console.log(data);
-      address_id = data[0].id;
-      handleAddressInstance(data);
+      console.log(data.length);
+      // address_id = data[0].id;
+      if(data.length === 0){
+        return;
+      }
+      else{
+        handleAddressInstance(data);
+      }
+      
     });
     // .catch((err) => console.error(err));
 
@@ -83,11 +94,40 @@ window.onload = () => {
 };
 
 
+
+
+const addCategories=(event)=>{
+  event.preventDefault();
+  const name = document.getElementById("category_name").value;
+  const slug = generateSlug(name);
+  console.log(slug);
+  console.log(name);
+
+  fetch("https://fashion-api-g1d6.onrender.com/category/list/", {
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({name, slug}),
+  }).then((res)=>res.json()).then((data)=>{
+    console.log(data);
+  }).catch((err)=>console.error(err));
+};
+
+
+const generateSlug = (str) => {
+  return str
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^\w-]+/g, "");
+};
+
+
+
+
 const handleCategory=()=>{
   const select_category = document.getElementById("category");
   // const div = document.createElement("div");
   fetch("https://fashion-api-g1d6.onrender.com/category/list/").then((res)=>res.json()).then((data)=>{
-    console.log(data);
+    // console.log(data);
     data.forEach((shop)=>{
       const option = document.createElement("option");
       option.value = shop.id;
@@ -187,7 +227,7 @@ const handleDetailsInstance = (details_data) => {
 
 
 const handleAddressInstance = (address_data) => {
-  // console.log(address_data[0].id);
+  // console.log(address_data[0].street_address);
   document.getElementById("street_address").value =address_data[0].street_address;
   document.getElementById("city").value = address_data[0].city;
   document.getElementById("postal_code").value = address_data[0].postal_code;
@@ -197,9 +237,9 @@ const handleAddressInstance = (address_data) => {
 
 
 
-const handleUserDetails = (event) => {
+const handleUserDetails = async (event) => {
   event.preventDefault();
-  console.log("hello");
+  // console.log("hello");
 
   const user_id = localStorage.getItem("user_id");
 
@@ -230,6 +270,7 @@ const handleUserDetails = (event) => {
     postal_code,
     country,
   };
+  console.log(allUser);
 
   fetch(`https://fashion-api-g1d6.onrender.com/user/${user_id}/`, {
     method: "PUT",
@@ -254,53 +295,84 @@ const handleUserDetails = (event) => {
   DetailsForm.append("account_type", account_type);
   DetailsForm.append("date_of_birth", date_of_birth);
   DetailsForm.append("user", user_id);
+
   fetch(
     `https://fashion-api-g1d6.onrender.com/account/details/?user_id=${user_id}`
   )
     .then((res) => res.json())
     .then((data) => {
-      // console.log(data[0].id);
+      console.log(data);
+      
       fetch(`https://fashion-api-g1d6.onrender.com/account/details/${data[0].id}/`, {
-          method: "PUT",
-          body: DetailsForm,
-        })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data);
-        });
+        method: "PUT",
+        body: DetailsForm,
+      })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      });
+      
     });
 
-  fetch(
-    `https://fashion-api-g1d6.onrender.com/account/address/?user_id=${user_id}`
-  )
+  fetch(`https://fashion-api-g1d6.onrender.com/account/address/?user_id=${user_id}`)
     .then((res) => res.json())
     .then((data) => {
-      const address_id = data[0].id;
-      fetch(
-        `https://fashion-api-g1d6.onrender.com/account/address/${address_id}/`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            // "id": 1,
-            street_address: street_address,
-            city: city,
-            postal_code: postal_code,
-            country: country,
-            user: user_id,
-          }),
-        }
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data);
-          Swal.fire({
-            icon: "success",
-            title: "Updated",
-            text: "Your Data Up to Date",
+      console.log(data);
+      if(data.length===0){
+        console.log("yes empty");
+        fetch(`https://fashion-api-g1d6.onrender.com/account/address/`,{
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              // "id": 1,
+              street_address: street_address,
+              city: city,
+              postal_code: postal_code,
+              country: country,
+              user: user_id,
+            }),
+          }
+        )
+          .then((res) => res.json())
+          .then((data) => {
+            console.log(data);
+            Swal.fire({
+              icon: "success",
+              title: "Updated",
+              text: "Your Data Up to Date",
+            });
+            location.reload();
           });
-          location.reload();
-        });
+      }
+      else{
+        console.log("not empty");
+        fetch(
+          `https://fashion-api-g1d6.onrender.com/account/address/${data[0].id}/`,
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              // "id": 1,
+              street_address: street_address,
+              city: city,
+              postal_code: postal_code,
+              country: country,
+              user: user_id,
+            }),
+          }
+        )
+          .then((res) => res.json())
+          .then((data) => {
+            console.log(data);
+            Swal.fire({
+              icon: "success",
+              title: "Updated",
+              text: "Your Data Up to Date",
+            });
+            // location.reload();
+          });
+      }
+      
     });
 };
 

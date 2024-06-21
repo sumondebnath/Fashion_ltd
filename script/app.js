@@ -15,7 +15,8 @@ window.onload = () =>{
     const token = localStorage.getItem("token");
     const user_id = localStorage.getItem("user_id");
     if(token && user_id){
-        document.getElementById("user-tag").style.display="none";
+        const user_tag = document.getElementById("user-tag");
+        user_tag.style.display="none";
     }
     else{
         document.getElementById("cart-tag").style.display="none";
